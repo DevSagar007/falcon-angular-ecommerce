@@ -1,0 +1,55 @@
+@import "./variables.css";
+@import "tailwindcss";
+
+/*
+ * App-wide base styles. Tailwind's preflight already supplies
+ * `box-sizing: border-box` and `font: inherit` on form controls.
+ */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--app-color-border, currentColor);
+  }
+
+  html { color-scheme: light; }
+
+  body {
+    @apply relative z-1 font-sans antialiased;
+    margin: 0;
+    background-color: var(--app-color-background);
+    color: var(--app-color-text-primary);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+    color: var(--app-color-text-primary);
+    font-weight: 700;
+  }
+
+  b, strong { font-weight: 700; }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) { cursor: pointer; }
+}
+
+/* Small uppercase eyebrow label shared by the home, product, error and 404 pages. */
+@utility kicker {
+  font-size: 11px;
+  color: var(--teal);
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* Product grid loading shimmer: `animate-[shine_1.2s_infinite]` in the products page skeleton. */
+@keyframes shine {
+  to { background-position: -200%; }
+}

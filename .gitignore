@@ -1,0 +1,40 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+
+# dependencies
+/node_modules
+/.npm-cache/
+
+# Angular CLI cache
+/.angular/cache
+
+# testing
+/coverage
+
+# misc
+.DS_Store
+Thumbs.db
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (an example is committed)
+.env*
+!.env.example
+
+# vercel
+.vercel
+
+# local Codex command configuration
+.commandcode/
+
+# typescript
+*.tsbuildinfo
