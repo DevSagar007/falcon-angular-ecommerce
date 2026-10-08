@@ -11,7 +11,7 @@ import {
 
 export type { CartItem, CartProduct };
 
-export const CART_STORAGE_KEY = "ecommerce-task-cart";
+export const CART_STORAGE_KEY = "falcon-angular-ecommerce-cart";
 /** Same envelope the previous (zustand `persist`) version wrote, so existing carts survive the migration. */
 const STORAGE_VERSION = 2;
 

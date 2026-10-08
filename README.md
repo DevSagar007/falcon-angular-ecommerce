@@ -2,7 +2,7 @@
 
 An Angular storefront built for the *Task 2 — E-Commerce Product Search & Checkout* frontend assignment. It covers browsing and filtering a 520-product catalog, product detail pages, a persistent cart, and a validated mock checkout.
 
-**Live demo:** https://future-studios-ecommerce.vercel.app/ (this URL predates the Angular migration, and this repository contains no deployment configuration; see [Deployment](#deployment))
+**Live demo:** https://falcon-angular-ecommerce.vercel.app/ (this URL predates the Angular migration, and this repository contains no deployment configuration; see [Deployment](#deployment))
 
 **Stack:** Angular 22 (standalone components, signals, zoneless, SSR + prerendering with `@angular/ssr` and Express) · TypeScript (strict) · Tailwind CSS 4 · Angular CDK (overlay, listbox) · Reactive Forms + Zod 4 · Lucide icons
 
@@ -33,7 +33,7 @@ npm run dev        # http://localhost:3000 (dev server with SSR)
 | --- | --- |
 | `npm run dev` | Angular dev server with server-side rendering and the mock API |
 | `npm run build` | Production build: browser + server bundles, prerenders `/`, `/cart`, `/checkout` and all 520 product pages |
-| `npm start` | Serves the production build (`dist/ecommerce-task/server/server.mjs`) on `PORT` (default 3000), with `NODE_ENV=production` unless you set it yourself |
+| `npm start` | Serves the production build (`dist/falcon-angular-ecommerce/server/server.mjs`) on `PORT` (default 3000), with `NODE_ENV=production` unless you set it yourself |
 | `npm run lint` | ESLint with angular-eslint (TypeScript, template and template-accessibility rules) |
 | `npm run typecheck` | `ngc -p tsconfig.app.json --noEmit`: TypeScript plus Angular template type checking, without output |
 | `npm run format` / `npm run format:check` | Prettier (double quotes, 120 columns) |
@@ -46,7 +46,7 @@ None are required. See `.env.example`.
 
 | Variable | Purpose |
 | --- | --- |
-| `SITE_URL` | Public origin (scheme + host, no path) used for canonical URLs, Open Graph tags, JSON-LD, `sitemap.xml` and `robots.txt`, e.g. `https://future-studios-ecommerce.vercel.app`. **Required for a real deployment, and needed at both build time and server startup** (see [Setting `SITE_URL`](#setting-site_url)). `NEXT_PUBLIC_SITE_URL` and Vercel's `VERCEL_PROJECT_PRODUCTION_URL` are still honoured as fallbacks; otherwise it defaults to `http://localhost:3000`, and production builds and the production server print a warning. |
+| `SITE_URL` | Public origin (scheme + host, no path) used for canonical URLs, Open Graph tags, JSON-LD, `sitemap.xml` and `robots.txt`, e.g. `https://falcon-angular-ecommerce.vercel.app`. **Required for a real deployment, and needed at both build time and server startup** (see [Setting `SITE_URL`](#setting-site_url)). `NEXT_PUBLIC_SITE_URL` and Vercel's `VERCEL_PROJECT_PRODUCTION_URL` are still honoured as fallbacks; otherwise it defaults to `http://localhost:3000`, and production builds and the production server print a warning. |
 | `PORT` | Port for `npm start` (default 3000). |
 | `NG_ALLOWED_HOSTS` | Extra host names the SSR server accepts. `localhost`, `127.0.0.1` and the demo domain are allowed in `angular.json` (`security.allowedHosts`); other `Host` headers are rejected to prevent SSRF. |
 
@@ -151,7 +151,7 @@ Client hydration uses event replay, so clicks made before the app finishes hydra
 
 ## Cart state and persistence
 
-- `CartStore` holds the items in a signal and persists them to localStorage under `ecommerce-task-cart` in the same `{ state: { items }, version: 2 }` format the previous version wrote, so existing carts survive the migration.
+- `CartStore` holds the items in a signal and persists them to localStorage under `falcon-angular-ecommerce-cart` in the same `{ state: { items }, version: 2 }` format the previous version wrote, so existing carts survive the migration.
 - **Hydration.** Nothing is read during server rendering or hydration; the App component loads the stored cart in `afterNextRender`, so the hydrated markup matches the server HTML. A `hydrated` signal lets the cart and checkout show a skeleton instead of briefly flashing "empty cart". A `storage` listener keeps tabs in sync and is removed on destroy.
 - **Stored shape.** Only the fields the cart needs (`id, slug, name, image, category, price, stock, quantity`); descriptions and reviews are not persisted.
 - **Invalid or outdated data.** Stored items pass through `sanitizeCartItems`, which drops malformed or duplicate entries and re-clamps quantities to 1…stock. Unparseable JSON or blocked storage results in an empty cart.
@@ -212,7 +212,7 @@ The repository has no automated test suite; `npm run lint` and `npm run typechec
 
 ## Deployment
 
-`npm run build` produces a Node server (`dist/ecommerce-task/server/server.mjs`) plus static browser files (`dist/ecommerce-task/browser/`, including the prerendered HTML). Run it on any Node host with `npm start`. This repository contains no host-specific deployment configuration, so it can't be confirmed from here which version the live demo URL above serves.
+`npm run build` produces a Node server (`dist/falcon-angular-ecommerce/server/server.mjs`) plus static browser files (`dist/falcon-angular-ecommerce/browser/`, including the prerendered HTML). Run it on any Node host with `npm start`. This repository contains no host-specific deployment configuration, so it can't be confirmed from here which version the live demo URL above serves.
 
 ### Setting `SITE_URL`
 
@@ -228,13 +228,13 @@ Rules:
 - Use the exact public origin, with `https://` and without a path. A trailing slash is removed automatically.
 - Use the **same** value for the build and the server. Otherwise prerendered product pages and the sitemap point at different domains.
 - **Changing the domain requires a rebuild.** Restarting the server alone leaves the old origin in the prerendered pages.
-- If the public host is not `localhost`, `127.0.0.1` or `future-studios-ecommerce.vercel.app`, also add it to `NG_ALLOWED_HOSTS` (or `security.allowedHosts` in `angular.json`), or the SSR server rejects its requests with 400.
+- If the public host is not `localhost`, `127.0.0.1` or `falcon-angular-ecommerce.vercel.app`, also add it to `NG_ALLOWED_HOSTS` (or `security.allowedHosts` in `angular.json`), or the SSR server rejects its requests with 400.
 - If `SITE_URL` is missing, the build log and the server's first log line show `WARNING: SITE_URL is not set…`. Check for it after every deploy.
 
 To check a build, look at the canonical link in a prerendered page:
 
 ```powershell
-Select-String -Path dist\ecommerce-task\browser\index.html -Pattern 'rel="canonical" href="[^"]*"' | ForEach-Object { $_.Matches.Value }
+Select-String -Path dist\falcon-angular-ecommerce\browser\index.html -Pattern 'rel="canonical" href="[^"]*"' | ForEach-Object { $_.Matches.Value }
 ```
 
 #### Windows PowerShell
@@ -252,7 +252,7 @@ To keep the values in a `.env` file instead (copy `.env.example`), pass the file
 ```powershell
 Copy-Item .env.example .env        # then edit SITE_URL in .env
 node --env-file=.env node_modules/@angular/cli/bin/ng.js build
-node --env-file=.env dist/ecommerce-task/server/server.mjs
+node --env-file=.env dist/falcon-angular-ecommerce/server/server.mjs
 ```
 
 In `cmd.exe`, use `set SITE_URL=https://your-domain.example` (no quotes, no spaces around `=`). On macOS/Linux, use `SITE_URL=https://your-domain.example npm run build`, then `SITE_URL=https://your-domain.example npm start`.
